@@ -24,12 +24,13 @@ public class TodoController {
     }
 
     @GetMapping("/{todoId}")
-    ResponseEntity<TodoResponseDto> getTodoById(@PathVariable String todoId) {
-        return ResponseEntity.ok(TodoResponseDto.builder().build());
+    ResponseEntity<TodoResponseDto> getTodoById(@PathVariable Long todoId) {
+        Todo todo = todoService.getTodoById(todoId);
+        return ResponseEntity.ok(TodoMapper.INSTANCE.toTodoResponseDto(todo));
     }
 
     @PutMapping("/{todoId}")
-    ResponseEntity<TodoResponseDto> updateTodo(@PathVariable String todoId) {
+    ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long todoId) {
         return ResponseEntity.ok(TodoResponseDto.builder().build());
     }
 }
