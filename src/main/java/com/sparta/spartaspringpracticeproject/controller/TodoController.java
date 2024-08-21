@@ -2,6 +2,7 @@ package com.sparta.spartaspringpracticeproject.controller;
 
 import com.sparta.spartaspringpracticeproject.dto.CreateTodoRequestDto;
 import com.sparta.spartaspringpracticeproject.dto.TodoResponseDto;
+import com.sparta.spartaspringpracticeproject.dto.UpdateTodoRequestDto;
 import com.sparta.spartaspringpracticeproject.entity.Todo;
 import com.sparta.spartaspringpracticeproject.mapper.TodoMapper;
 import com.sparta.spartaspringpracticeproject.service.TodoService;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/todos")
@@ -29,8 +32,14 @@ public class TodoController {
         return ResponseEntity.ok(TodoMapper.INSTANCE.toTodoResponseDto(todo));
     }
 
-    @PutMapping("/{todoId}")
-    ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long todoId) {
-        return ResponseEntity.ok(TodoResponseDto.builder().build());
+    @PatchMapping("/{todoId}")
+    ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long todoId, @RequestBody UpdateTodoRequestDto updateTodoRequestDto) {
+        Todo todo = todoService.updateTodo(
+                todoId,
+                Optional.ofNullable(updateTodoRequestDto.getTitle()),
+                Optional.ofNullable(updateTodoRequestDto.getContent()),
+                Optional.ofNullable(updateTodoRequestDto.getUserName())
+        );
+        return ResponseEntity.ok(TodoMapper.INSTANCE.toTodoResponseDto(todo));
     }
 }
