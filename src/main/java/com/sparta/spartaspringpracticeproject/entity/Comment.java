@@ -17,16 +17,16 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Todo {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "todo_id")
     Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "todo_id")
     @Column
-    String title;
-
-    @Column
+    Todo todo;
+    
     String content;
 
     @Column
@@ -41,8 +41,7 @@ public class Todo {
     LocalDateTime updateAt;
 
     @Builder
-    public Todo(String title, String content, String userName) {
-        this.title = title;
+    public Comment(String content, String userName) {
         this.content = content;
         this.userName = userName;
     }
