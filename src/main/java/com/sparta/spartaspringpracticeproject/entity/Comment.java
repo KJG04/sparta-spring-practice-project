@@ -22,27 +22,28 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "todo_id")
-    @Column
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "TODO_ID", nullable = false)
     Todo todo;
-    
+
+    @Column(nullable = false)
     String content;
 
-    @Column
+    @Column(nullable = false)
     String userName;
 
-    @Column
+    @Column(nullable = false)
     @CreatedDate
     LocalDateTime createAt;
 
-    @Column
+    @Column(nullable = false)
     @LastModifiedDate
     LocalDateTime updateAt;
 
     @Builder
-    public Comment(String content, String userName) {
+    public Comment(String content, String userName, Todo todo) {
         this.content = content;
         this.userName = userName;
+        this.todo = todo;
     }
 }

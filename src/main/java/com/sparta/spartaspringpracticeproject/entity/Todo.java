@@ -20,23 +20,22 @@ import java.time.LocalDateTime;
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "todo_id")
     Long id;
 
-    @Column
+    @Column(nullable = false)
     String title;
 
-    @Column
+    @Column(nullable = false)
     String content;
 
-    @Column
+    @Column(nullable = false)
     String userName;
 
-    @Column
+    @Column(nullable = false)
     @CreatedDate
     LocalDateTime createAt;
 
-    @Column
+    @Column(nullable = false)
     @LastModifiedDate
     LocalDateTime updateAt;
 

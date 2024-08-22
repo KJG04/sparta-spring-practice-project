@@ -1,6 +1,5 @@
 package com.sparta.spartaspringpracticeproject.dto;
 
-import com.sparta.spartaspringpracticeproject.entity.Todo;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,7 +12,7 @@ public class CommentResponseDto {
     Long id;
     String content;
     String userName;
-    Todo todo;
+    TodoResponseDto todo;
     LocalDateTime createAt;
     LocalDateTime updateAt;
 }
