@@ -2,6 +2,7 @@ package com.sparta.spartaspringpracticeproject.controller;
 
 import com.sparta.spartaspringpracticeproject.dto.CommentResponseDto;
 import com.sparta.spartaspringpracticeproject.dto.CreateCommentRequestDto;
+import com.sparta.spartaspringpracticeproject.dto.UpdateCommentRequestDto;
 import com.sparta.spartaspringpracticeproject.entity.Comment;
 import com.sparta.spartaspringpracticeproject.mapper.CommentMapper;
 import com.sparta.spartaspringpracticeproject.service.CommentService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -39,7 +41,9 @@ public class CommentController {
     }
 
     @PatchMapping("/{commentId}")
-    void updateComment(@PathVariable Long commentId) {
+    ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long commentId, @RequestBody UpdateCommentRequestDto updateCommentRequestDto) {
+        Comment comment = commentService.updateComment(commentId, Optional.ofNullable(updateCommentRequestDto.getContent()), Optional.ofNullable(updateCommentRequestDto.getUserName()));
+        return ResponseEntity.ok(CommentMapper.INSTANCE.toCommentResponseDto(comment));
     }
 
     @DeleteMapping("/{commentId}")

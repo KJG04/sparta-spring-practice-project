@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -35,5 +36,12 @@ public class CommentService {
 
     public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
+    }
+
+    public Comment updateComment(Long commentId, Optional<String> content, Optional<String> userName) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "todoId 해당하는 Todo를 찾을 수 없습니다."));
+        content.ifPresent(comment::setContent);
+        userName.ifPresent(comment::setUserName);
+        return commentRepository.save(comment);
     }
 }
