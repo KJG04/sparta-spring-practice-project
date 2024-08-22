@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
@@ -24,18 +26,23 @@ public class CommentController {
     }
 
     @GetMapping()
-    void getComments() {
+    ResponseEntity<List<CommentResponseDto>> getComments() {
+        List<Comment> commentList = commentService.getAllComments();
+        List<CommentResponseDto> commentResponseDtoList = commentList.stream().map(CommentMapper.INSTANCE::toCommentResponseDto).toList();
+        return ResponseEntity.ok(commentResponseDtoList);
     }
 
     @GetMapping("/{commentId}")
-    void getCommentById(@PathVariable String commentId) {
+    ResponseEntity<CommentResponseDto> getCommentById(@PathVariable Long commentId) {
+        Comment comment = commentService.getCommentById(commentId);
+        return ResponseEntity.ok(CommentMapper.INSTANCE.toCommentResponseDto(comment));
     }
 
     @PatchMapping("/{commentId}")
-    void updateComment(@PathVariable String commentId) {
+    void updateComment(@PathVariable Long commentId) {
     }
 
     @DeleteMapping("/{commentId}")
-    void deleteComment(@PathVariable String commentId) {
+    void deleteComment(@PathVariable Long commentId) {
     }
 }
