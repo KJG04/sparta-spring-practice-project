@@ -54,4 +54,10 @@ public class TodoController {
         PageResponseDto<TodoWithCommentCountResponseDto> pageResponseDto = TodoMapper.INSTANCE.toTodoWithCommentCountResponseDtoPage(todoWithCommentCountResponseDtoPage);
         return ResponseEntity.ok(pageResponseDto);
     }
+
+    @DeleteMapping("/{todoId}")
+    ResponseEntity deleteTodo(@PathVariable Long todoId) {
+        todoService.deleteTodoById(todoId);
+        return ResponseEntity.noContent().build();
+    }
 }

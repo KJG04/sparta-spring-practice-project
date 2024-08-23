@@ -40,7 +40,7 @@ public class Todo {
     @LastModifiedDate
     LocalDateTime updateAt;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "todo")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "todo")
     List<Comment> comments;
 
     @Builder

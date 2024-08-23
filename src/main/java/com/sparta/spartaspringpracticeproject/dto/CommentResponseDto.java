@@ -12,7 +12,6 @@ public class CommentResponseDto {
     Long id;
     String content;
     String userName;
-    TodoResponseDto todo;
     LocalDateTime createAt;
     LocalDateTime updateAt;
 }

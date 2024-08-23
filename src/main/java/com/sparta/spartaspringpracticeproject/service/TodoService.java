@@ -38,4 +38,8 @@ public class TodoService {
     public Page<Todo> getTodos(Pageable pageable) {
         return todoRepository.findAll(pageable);
     }
+
+    public void deleteTodoById(Long todoId) {
+        todoRepository.delete(todoRepository.findById(todoId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "todoId 해당하는 Todo를 찾을 수 없습니다.")));
+    }
 }
