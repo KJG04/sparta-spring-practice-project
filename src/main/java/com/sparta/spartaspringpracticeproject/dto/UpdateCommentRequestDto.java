@@ -9,6 +9,5 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateCommentRequestDto {
     String content;
-
     String userName;
 }
