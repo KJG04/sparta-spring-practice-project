@@ -1,13 +1,14 @@
 package com.sparta.spartaspringpracticeproject.controller;
 
-import com.sparta.spartaspringpracticeproject.dto.CreateTodoRequestDto;
-import com.sparta.spartaspringpracticeproject.dto.TodoResponseDto;
-import com.sparta.spartaspringpracticeproject.dto.UpdateTodoRequestDto;
+import com.sparta.spartaspringpracticeproject.dto.*;
 import com.sparta.spartaspringpracticeproject.entity.Todo;
 import com.sparta.spartaspringpracticeproject.mapper.TodoMapper;
 import com.sparta.spartaspringpracticeproject.service.TodoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +42,16 @@ public class TodoController {
                 Optional.ofNullable(updateTodoRequestDto.getUserName())
         );
         return ResponseEntity.ok(TodoMapper.INSTANCE.toTodoResponseDto(todo));
+    }
+
+    @GetMapping()
+    ResponseEntity<PageResponseDto<TodoWithCommentCountResponseDto>> getTodos(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        Integer pageNumber = Optional.ofNullable(page).orElse(0); // 기본값 0
+        Integer pageSize = Optional.ofNullable(size).orElse(10); // 기본값 10
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "updateAt");
+        Page<Todo> todoPage = todoService.getTodos(pageRequest);
+        Page<TodoWithCommentCountResponseDto> todoWithCommentCountResponseDtoPage = todoPage.map(TodoMapper.INSTANCE::toTodoWithCommentCountResponseDto);
+        PageResponseDto<TodoWithCommentCountResponseDto> pageResponseDto = TodoMapper.INSTANCE.toTodoWithCommentCountResponseDtoPage(todoWithCommentCountResponseDtoPage);
+        return ResponseEntity.ok(pageResponseDto);
     }
 }

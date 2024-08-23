@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table
@@ -38,6 +39,9 @@ public class Todo {
     @Column(nullable = false)
     @LastModifiedDate
     LocalDateTime updateAt;
+
+    @OneToMany(orphanRemoval = true, mappedBy = "todo")
+    List<Comment> comments;
 
     @Builder
     public Todo(String title, String content, String userName) {

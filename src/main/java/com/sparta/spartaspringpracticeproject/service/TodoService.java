@@ -3,6 +3,8 @@ package com.sparta.spartaspringpracticeproject.service;
 import com.sparta.spartaspringpracticeproject.entity.Todo;
 import com.sparta.spartaspringpracticeproject.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,5 +33,9 @@ public class TodoService {
         userName.ifPresent(todo::setUserName);
 
         return todoRepository.save(todo);
+    }
+
+    public Page<Todo> getTodos(Pageable pageable) {
+        return todoRepository.findAll(pageable);
     }
 }
