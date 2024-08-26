@@ -12,7 +12,6 @@ public class TodoWithCommentCountResponseDto {
     Long id;
     String title;
     String content;
-    String userName;
     Integer commentCount;
     LocalDateTime createAt;
     LocalDateTime updateAt;

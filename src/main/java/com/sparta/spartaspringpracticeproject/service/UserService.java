@@ -16,6 +16,9 @@ public class UserService {
     UserRepository userRepository;
 
     public User createUser(String name, String email) {
+        if (userRepository.findByEmail(email).isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "해당하는 email을 가지는 User가 이미 존재합니다.");
+
         User user = User.builder().name(name).email(email).build();
         return userRepository.save(user);
     }
@@ -25,11 +28,11 @@ public class UserService {
     }
 
     public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "해당 userId를 가지는 User가 없습니다."));
+        return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 userId를 가지는 User가 없습니다."));
     }
 
     public User updateUser(Long userId, Optional<String> name, Optional<String> email) {
-        User user = this.getUserById(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "해당 userId를 가지는 User가 없습니다."));
 
         name.ifPresent(user::setName);
         email.ifPresent(user::setEmail);
@@ -38,7 +41,7 @@ public class UserService {
     }
 
     public void deleteUserById(Long userId) {
-        User user = this.getUserById(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 userId를 가지는 User가 없습니다."));
         userRepository.delete(user);
     }
 }

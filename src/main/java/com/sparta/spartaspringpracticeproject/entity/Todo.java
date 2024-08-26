@@ -29,8 +29,9 @@ public class Todo {
     @Column(nullable = false)
     String content;
 
-    @Column(nullable = false)
-    String userName;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "USER_ID")
+    User user;
 
     @Column(nullable = false)
     @CreatedDate
@@ -44,9 +45,9 @@ public class Todo {
     List<Comment> comments;
 
     @Builder
-    public Todo(String title, String content, String userName) {
+    public Todo(String title, String content, User user) {
         this.title = title;
         this.content = content;
-        this.userName = userName;
+        this.user = user;
     }
 }

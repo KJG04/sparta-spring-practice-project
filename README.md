@@ -4,7 +4,7 @@
 
 | 기능       | Method | URL             | request                                                           | response                                           | 상태 코드 |
 |----------|--------|-----------------|-------------------------------------------------------------------|----------------------------------------------------|-------|
-| 일정 생성    | POST   | /api/todos      | body: { "title": string, "content": string, "userName": string }  | TodoResponseDto                                    | 201   |
+| 일정 생성    | POST   | /api/todos      | body: { "title": string, "content": string, "userId": number }    | TodoResponseDto                                    | 201   |
 | 일정 조회    | GET    | /api/todos      | query param: { "page": number = 0, "size": number = 10 }          | PageResponseDto\<TodoWithCommentCountResponseDto\> | 200   |
 | 특정 일정 조회 | GET    | /api/todos/{id} | no content                                                        | TodoResponseDto                                    | 200   |
 | 특정 일정 수정 | PATCH  | /api/todos/{id} | body: { "title"?: string, "content"?: string, "userId"?: number } | TodoResponseDto                                    | 200   |

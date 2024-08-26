@@ -23,7 +23,7 @@ public class TodoController {
 
     @PostMapping()
     ResponseEntity<TodoResponseDto> createTodo(@Valid @RequestBody CreateTodoRequestDto createTodoRequestDto) {
-        Todo todo = todoService.createTodo(createTodoRequestDto.getTitle(), createTodoRequestDto.getContent(), createTodoRequestDto.getUserName());
+        Todo todo = todoService.createTodo(createTodoRequestDto.getTitle(), createTodoRequestDto.getContent(), createTodoRequestDto.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(TodoMapper.INSTANCE.toTodoResponseDto(todo));
     }
 
@@ -34,12 +34,12 @@ public class TodoController {
     }
 
     @PatchMapping("/{todoId}")
-    ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long todoId, @RequestBody UpdateTodoRequestDto updateTodoRequestDto) {
+    ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long todoId, @Valid @RequestBody UpdateTodoRequestDto updateTodoRequestDto) {
         Todo todo = todoService.updateTodo(
                 todoId,
                 Optional.ofNullable(updateTodoRequestDto.getTitle()),
                 Optional.ofNullable(updateTodoRequestDto.getContent()),
-                Optional.ofNullable(updateTodoRequestDto.getUserName())
+                Optional.ofNullable(updateTodoRequestDto.getUserId())
         );
         return ResponseEntity.ok(TodoMapper.INSTANCE.toTodoResponseDto(todo));
     }

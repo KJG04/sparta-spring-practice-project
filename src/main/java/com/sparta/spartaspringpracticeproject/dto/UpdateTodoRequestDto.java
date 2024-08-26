@@ -9,8 +9,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateTodoRequestDto {
     String title;
-
     String content;
-
-    String userName;
+    Long userId;
 }

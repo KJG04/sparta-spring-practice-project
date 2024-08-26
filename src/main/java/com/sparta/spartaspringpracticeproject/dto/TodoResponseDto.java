@@ -1,6 +1,6 @@
 package com.sparta.spartaspringpracticeproject.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import com.sparta.spartaspringpracticeproject.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ public class TodoResponseDto {
     Long id;
     String title;
     String content;
-    String userName;
+    User user;
     LocalDateTime createAt;
     LocalDateTime updateAt;
 }

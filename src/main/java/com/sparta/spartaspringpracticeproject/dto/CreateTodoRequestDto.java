@@ -1,6 +1,7 @@
 package com.sparta.spartaspringpracticeproject.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -14,6 +15,6 @@ public class CreateTodoRequestDto {
     @NotBlank(message = "content은 빈 값이 아니여야 합니다.")
     String content;
 
-    @NotBlank(message = "userName은 빈 값이 아니여야 합니다.")
-    String userName;
+    @NotNull(message = "userName은 null이 아니여야 합니다.")
+    Long userId;
 }
