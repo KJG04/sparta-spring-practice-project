@@ -1,6 +1,7 @@
 package com.sparta.spartaspringpracticeproject.controller;
 
 import com.sparta.spartaspringpracticeproject.dto.CreateUserRequestDto;
+import com.sparta.spartaspringpracticeproject.dto.UpdateUserRequestDto;
 import com.sparta.spartaspringpracticeproject.dto.UserResponseDto;
 import com.sparta.spartaspringpracticeproject.entity.User;
 import com.sparta.spartaspringpracticeproject.mapper.UserMapper;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -37,10 +39,14 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    void updateUser(@PathVariable Long userId) {
+    ResponseEntity<UserResponseDto> updateUser(@PathVariable Long userId, @RequestBody @Valid UpdateUserRequestDto updateUserRequestDto) {
+        User user = userService.updateUser(userId, Optional.ofNullable(updateUserRequestDto.getName()), Optional.ofNullable(updateUserRequestDto.getEmail()));
+        return ResponseEntity.ok(UserMapper.INSTANCE.toUserResponseDto(user));
     }
 
     @DeleteMapping("/{userId}")
-    void deleteUser(@PathVariable Long userId) {
+    ResponseEntity deleteUser(@PathVariable Long userId) {
+        userService.deleteUserById(userId);
+        return ResponseEntity.noContent().build();
     }
 }
