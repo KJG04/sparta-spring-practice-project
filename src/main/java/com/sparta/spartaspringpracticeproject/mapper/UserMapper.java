@@ -1,6 +1,6 @@
 package com.sparta.spartaspringpracticeproject.mapper;
 
-import com.sparta.spartaspringpracticeproject.dto.RegisterUserResponseDto;
+import com.sparta.spartaspringpracticeproject.dto.AuthUserResponseDto;
 import com.sparta.spartaspringpracticeproject.dto.UserResponseDto;
 import com.sparta.spartaspringpracticeproject.entity.User;
 import org.mapstruct.Mapper;
@@ -12,5 +12,5 @@ public interface UserMapper {
 
     UserResponseDto toUserResponseDto(User user);
 
-    RegisterUserResponseDto toRegisterUserResponseDto(User user, String accessToken);
+    AuthUserResponseDto toRegisterUserResponseDto(User user, String accessToken);
 }

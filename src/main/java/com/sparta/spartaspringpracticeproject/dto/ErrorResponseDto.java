@@ -6,7 +6,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class RegisterUserResponseDto {
-    UserResponseDto user;
-    String accessToken;
+public class ErrorResponseDto {
+    String timestamp;
+    int status;
+    String error;
+    String message;
+    String path;
 }

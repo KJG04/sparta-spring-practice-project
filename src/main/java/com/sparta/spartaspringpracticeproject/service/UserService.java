@@ -57,4 +57,14 @@ public class UserService {
     public String createAccessToken(Long userId) {
         return jwtUtil.createToken(userId);
     }
+
+    private final ResponseStatusException abstractLoginFailException = new ResponseStatusException(HttpStatus.UNAUTHORIZED, "email 또는 password가 일치하지 않습니다.");
+
+    public User loginUser(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> abstractLoginFailException);
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw abstractLoginFailException;
+        }
+        return user;
+    }
 }

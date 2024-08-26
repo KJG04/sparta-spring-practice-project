@@ -1,9 +1,6 @@
 package com.sparta.spartaspringpracticeproject.controller;
 
-import com.sparta.spartaspringpracticeproject.dto.CreateUserRequestDto;
-import com.sparta.spartaspringpracticeproject.dto.RegisterUserResponseDto;
-import com.sparta.spartaspringpracticeproject.dto.UpdateUserRequestDto;
-import com.sparta.spartaspringpracticeproject.dto.UserResponseDto;
+import com.sparta.spartaspringpracticeproject.dto.*;
 import com.sparta.spartaspringpracticeproject.entity.User;
 import com.sparta.spartaspringpracticeproject.mapper.UserMapper;
 import com.sparta.spartaspringpracticeproject.service.UserService;
@@ -28,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping()
-    ResponseEntity<RegisterUserResponseDto> createUser(@Valid @RequestBody CreateUserRequestDto createUserRequestDto) {
+    ResponseEntity<AuthUserResponseDto> createUser(@Valid @RequestBody CreateUserRequestDto createUserRequestDto) {
         User user = userService.createUser(createUserRequestDto.getName(), createUserRequestDto.getEmail(), createUserRequestDto.getPassword());
         String accessToken = userService.createAccessToken(user.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.INSTANCE.toRegisterUserResponseDto(user, accessToken));
@@ -50,5 +47,12 @@ public class UserController {
     ResponseEntity deleteUser(@PathVariable Long userId) {
         userService.deleteUserById(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/login")
+    ResponseEntity<AuthUserResponseDto> loginUser(@RequestBody @Valid LoginUserRequestDto loginUserRequestDto) {
+        User user = userService.loginUser(loginUserRequestDto.getEmail(), loginUserRequestDto.getPassword());
+        String accessToken = userService.createAccessToken(user.getId());
+        return ResponseEntity.ok(UserMapper.INSTANCE.toRegisterUserResponseDto(user, accessToken));
     }
 }
