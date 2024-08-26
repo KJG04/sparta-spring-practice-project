@@ -1,6 +1,7 @@
 package com.sparta.spartaspringpracticeproject.controller;
 
 import com.sparta.spartaspringpracticeproject.dto.CreateUserRequestDto;
+import com.sparta.spartaspringpracticeproject.dto.RegisterUserResponseDto;
 import com.sparta.spartaspringpracticeproject.dto.UpdateUserRequestDto;
 import com.sparta.spartaspringpracticeproject.dto.UserResponseDto;
 import com.sparta.spartaspringpracticeproject.entity.User;
@@ -27,9 +28,10 @@ public class UserController {
     }
 
     @PostMapping()
-    ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody CreateUserRequestDto createUserRequestDto) {
-        User user = userService.createUser(createUserRequestDto.getName(), createUserRequestDto.getEmail());
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.INSTANCE.toUserResponseDto(user));
+    ResponseEntity<RegisterUserResponseDto> createUser(@Valid @RequestBody CreateUserRequestDto createUserRequestDto) {
+        User user = userService.createUser(createUserRequestDto.getName(), createUserRequestDto.getEmail(), createUserRequestDto.getPassword());
+        String accessToken = userService.createAccessToken(user.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.INSTANCE.toRegisterUserResponseDto(user, accessToken));
     }
 
     @GetMapping("/{userId}")

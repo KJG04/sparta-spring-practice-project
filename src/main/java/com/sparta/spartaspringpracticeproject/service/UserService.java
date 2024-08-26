@@ -1,5 +1,7 @@
 package com.sparta.spartaspringpracticeproject.service;
 
+import com.sparta.spartaspringpracticeproject.config.JwtUtil;
+import com.sparta.spartaspringpracticeproject.config.PasswordEncoder;
 import com.sparta.spartaspringpracticeproject.entity.User;
 import com.sparta.spartaspringpracticeproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,18 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public User createUser(String name, String email) {
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    JwtUtil jwtUtil;
+
+    public User createUser(String name, String email, String password) {
         if (userRepository.findByEmail(email).isPresent())
             throw new ResponseStatusException(HttpStatus.CONFLICT, "해당하는 email을 가지는 User가 이미 존재합니다.");
 
-        User user = User.builder().name(name).email(email).build();
+        String encodedPassword = passwordEncoder.encode(password);
+        User user = User.builder().name(name).email(email).password(encodedPassword).build();
         return userRepository.save(user);
     }
 
@@ -43,5 +52,9 @@ public class UserService {
     public void deleteUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 userId를 가지는 User가 없습니다."));
         userRepository.delete(user);
+    }
+
+    public String createAccessToken(Long userId) {
+        return jwtUtil.createToken(userId);
     }
 }
