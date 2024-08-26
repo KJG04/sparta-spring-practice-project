@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -18,7 +20,8 @@ public class UserController {
     UserService userService;
 
     @GetMapping()
-    void getUsers() {
+    ResponseEntity<List<UserResponseDto>> getUsers() {
+        return ResponseEntity.ok(userService.getUsers().stream().map(UserMapper.INSTANCE::toUserResponseDto).toList());
     }
 
     @PostMapping()
@@ -28,7 +31,9 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    void getUserById(@PathVariable Long userId) {
+    ResponseEntity<UserResponseDto> getUserById(@PathVariable Long userId) {
+        User user = userService.getUserById(userId);
+        return ResponseEntity.ok(UserMapper.INSTANCE.toUserResponseDto(user));
     }
 
     @PatchMapping("/{userId}")
