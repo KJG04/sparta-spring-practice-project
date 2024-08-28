@@ -1,7 +1,9 @@
 package com.sparta.spartaspringpracticeproject.dto;
 
+import com.sparta.spartaspringpracticeproject.entity.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -20,4 +22,7 @@ public class CreateUserRequestDto {
     @NotBlank(message = "password은 빈 값이 아니여야 합니다.")
     @Size(min = 8, message = "password는 8글자 이상이여야 합니다.")
     String password;
+
+    @NotNull(message = "role은 null이 아니여야 합니다.")
+    UserRole role;
 }

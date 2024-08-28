@@ -1,6 +1,7 @@
 package com.sparta.spartaspringpracticeproject.dto;
 
 
+import com.sparta.spartaspringpracticeproject.entity.UserRole;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
@@ -13,4 +14,6 @@ public class UpdateUserRequestDto {
 
     @Email(message = "email은 이메일 형식이여야 합니다.")
     String email;
+
+    UserRole role;
 }

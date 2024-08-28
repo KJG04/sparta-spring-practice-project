@@ -26,7 +26,7 @@ public class UserController {
 
     @PostMapping()
     ResponseEntity<AuthUserResponseDto> createUser(@Valid @RequestBody CreateUserRequestDto createUserRequestDto) {
-        User user = userService.createUser(createUserRequestDto.getName(), createUserRequestDto.getEmail(), createUserRequestDto.getPassword());
+        User user = userService.createUser(createUserRequestDto.getName(), createUserRequestDto.getEmail(), createUserRequestDto.getPassword(), createUserRequestDto.getRole());
         String accessToken = userService.createAccessToken(user.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.INSTANCE.toRegisterUserResponseDto(user, accessToken));
     }
@@ -39,7 +39,7 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     ResponseEntity<UserResponseDto> updateUser(@PathVariable Long userId, @RequestBody @Valid UpdateUserRequestDto updateUserRequestDto) {
-        User user = userService.updateUser(userId, Optional.ofNullable(updateUserRequestDto.getName()), Optional.ofNullable(updateUserRequestDto.getEmail()));
+        User user = userService.updateUser(userId, Optional.ofNullable(updateUserRequestDto.getName()), Optional.ofNullable(updateUserRequestDto.getEmail()), Optional.ofNullable(updateUserRequestDto.getRole()));
         return ResponseEntity.ok(UserMapper.INSTANCE.toUserResponseDto(user));
     }
 

@@ -50,7 +50,7 @@ public class AuthFilter implements Filter {
             if (!StringUtils.hasText(accessToken)) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "accessToken이 비어있습니다.");
             }
-
+            accessToken = accessToken.replace(JwtUtil.BEARER_PREFIX, "");
             if (!jwtUtil.validateToken(accessToken)) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "유효하지 않은 accessToken입니다.");
             }

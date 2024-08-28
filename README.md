@@ -22,14 +22,14 @@
 
 # 유저 API
 
-| 기능       | Method | URL              | request                                                       | response            | 상태 코드 |
-|----------|--------|------------------|---------------------------------------------------------------|---------------------|-------|
-| 유저 생성    | POST   | /api/users       | body: { "name": string, "email": string, "password": string } | AuthUserResponseDto | 201   |
-| 유저 로그인   | POST   | /api/users/login | body: { "email": string, "password": string }                 | AuthUserResponseDto | 200   |
-| 유저 조회    | GET    | /api/users       | no content                                                    | UserResponseDto[]   | 200   |
-| 특정 유저 조회 | GET    | /api/users/{id}  | no content                                                    | UserResponseDto     | 200   |
-| 특정 유저 수정 | PATCH  | /api/users/{id}  | body: { "content": string, "userName": string }               | UserResponseDto     | 200   |
-| 특정 유저 삭제 | DELETE | /api/users/{id}  | no content                                                    | no content          | 204   |
+| 기능       | Method | URL              | request                                                                         | response            | 상태 코드 |
+|----------|--------|------------------|---------------------------------------------------------------------------------|---------------------|-------|
+| 유저 생성    | POST   | /api/users       | body: { "name": string, "email": string, "password": string, "role": UserRole } | AuthUserResponseDto | 201   |
+| 유저 로그인   | POST   | /api/users/login | body: { "email": string, "password": string }                                   | AuthUserResponseDto | 200   |
+| 유저 조회    | GET    | /api/users       | no content                                                                      | UserResponseDto[]   | 200   |
+| 특정 유저 조회 | GET    | /api/users/{id}  | no content                                                                      | UserResponseDto     | 200   |
+| 특정 유저 수정 | PATCH  | /api/users/{id}  | body: { "name": string, "email": string, "role": UserRole }                     | UserResponseDto     | 200   |
+| 특정 유저 삭제 | DELETE | /api/users/{id}  | no content                                                                      | no content          | 204   |
 
 # TodoResponseDto
 
@@ -92,6 +92,7 @@
   "id": number,
   "name": string,
   "email": string,
+  "role": UserRole,
   "createAt": DateTime,
   "updateAt": DateTime
 }
@@ -103,5 +104,14 @@
 {
   "accessToken": string,
   "user": UserResponseDto
+}
+```
+
+# UserRole
+
+```java
+enum UserRole {
+    ADMIN,
+    USER,
 }
 ```

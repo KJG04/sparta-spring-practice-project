@@ -2,6 +2,8 @@ package com.sparta.spartaspringpracticeproject.controller;
 
 import com.sparta.spartaspringpracticeproject.dto.*;
 import com.sparta.spartaspringpracticeproject.entity.Todo;
+import com.sparta.spartaspringpracticeproject.entity.User;
+import com.sparta.spartaspringpracticeproject.entity.UserRole;
 import com.sparta.spartaspringpracticeproject.mapper.TodoMapper;
 import com.sparta.spartaspringpracticeproject.service.TodoService;
 import jakarta.validation.Valid;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -34,7 +37,10 @@ public class TodoController {
     }
 
     @PatchMapping("/{todoId}")
-    ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long todoId, @Valid @RequestBody UpdateTodoRequestDto updateTodoRequestDto) {
+    ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long todoId, @Valid @RequestBody UpdateTodoRequestDto updateTodoRequestDto, @RequestAttribute("user") User user) {
+        if (user.getRole().equals(UserRole.USER))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
+
         Todo todo = todoService.updateTodo(
                 todoId,
                 Optional.ofNullable(updateTodoRequestDto.getTitle()),
@@ -56,7 +62,10 @@ public class TodoController {
     }
 
     @DeleteMapping("/{todoId}")
-    ResponseEntity deleteTodo(@PathVariable Long todoId) {
+    ResponseEntity deleteTodo(@PathVariable Long todoId, @RequestAttribute("user") User user) {
+        if (user.getRole().equals(UserRole.USER))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
+
         todoService.deleteTodoById(todoId);
         return ResponseEntity.noContent().build();
     }

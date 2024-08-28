@@ -1,7 +1,9 @@
 package com.sparta.spartaspringpracticeproject.config;
 
+import com.sparta.spartaspringpracticeproject.entity.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,7 +16,8 @@ import java.util.Date;
 public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
-    private final long TOKEN_TIME = 60 * 60 * 1000L * 2; // 60분
+    private static final long TOKEN_TIME = 60 * 60 * 1000L * 2; // 60분
+    private static final String ROLE_KEY = "role";
 
     @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
     private String secretKey;
@@ -27,12 +30,13 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String createToken(Long userId) {
+    public String createToken(Long userId, UserRole role) {
         Date now = new Date();
         return BEARER_PREFIX +
                 Jwts
                         .builder()
                         .setSubject(userId.toString())
+                        .claim(ROLE_KEY, role)
                         .setExpiration(new Date(now.getTime() + TOKEN_TIME))
                         .setIssuedAt(now)
                         .signWith(key, signatureAlgorithm)
@@ -43,7 +47,8 @@ public class JwtUtil {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (SecurityException | MalformedJwtException | SignatureException e) {
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException |
+                 IllegalArgumentException e) {
             return false;
         }
     }
